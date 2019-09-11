@@ -5,7 +5,7 @@ namespace ZFTInfo\Knowledge\Http\Controllers;
 use Illuminate\Routing\Controller;
 
 
-use ZFTInfo\Knowledge\Models\Course;
+use ZFTInfo\Knowledge\Models\Article;
 use ZFTInfo\Knowledge\Models\Tag;
 
 use Encore\Admin\Controllers\AdminController;
@@ -15,19 +15,19 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class CourseController extends AdminController
+class ArticleController extends AdminController
 {
     use HasResourceActions;
 
     /**
      * @var string
      */
-    protected $title = '课程';
+    protected $title = '文章';
     protected $desc_index = '列表';
     protected $desc_show = '详情';
     protected $desc_edit = '编辑';
     protected $desc_create = '创建';
-    protected $desc_url = '/course';
+    protected $desc_url = '/article';
 
     /**
      * Index interface.
@@ -106,7 +106,7 @@ class CourseController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Course());
+        $grid = new Grid(new Article());
 
         $grid->disableRowSelector();
 
@@ -120,11 +120,7 @@ class CourseController extends AdminController
 
         $grid->tags('标签')->pluck('name')->label();
 
-        $grid->code('编码');
-
         $grid->link('链接')->link();
-      
-        $grid->desc('描述');
 
         // 搜索相关
         $grid->filter(function (Grid\Filter $filter) {
@@ -146,7 +142,7 @@ class CourseController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Course::findOrFail($id));
+        $show = new Show(Article::findOrFail($id));
 
         $show->name('名称');
 
@@ -154,12 +150,7 @@ class CourseController extends AdminController
             return $authors->pluck('name');
         })->label();
 
-        $show->code('编码');
-
         $show->link('链接')->link();
-
-        $show->desc('描述');
-
 
         $show->divider();
 
@@ -177,20 +168,16 @@ class CourseController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Course);
+        $form = new Form(new Article);
 
         $form->text('name', '名称')->rules('required');
 
-        $form->text('code', '编码');
-
         $form->url('link', '链接');
-
-        $form->text('desc', '描述');
 
         $form->multipleSelect('tags', '标签')->options(function ($id) {
             return Tag::all()->pluck('name', 'id');
         });
-        
+
 
         return $form;
     }
