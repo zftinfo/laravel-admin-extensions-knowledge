@@ -1,5 +1,13 @@
 <?php
 
-use ZFTInfo\Knowledge\Http\Controllers\KnowledgeController;
+use ZFTInfo\Knowledge\Http\Controllers\CourseController;
 
-Route::get('knowledge', KnowledgeController::class.'@index');
+use ZFTInfo\Knowledge\Http\Controllers\ArticleController;
+
+use ZFTInfo\Knowledge\Http\Controllers\TagController;
+
+Route::resource('course',  CourseController::class);
+
+Route::resource('article',  ArticleController::class);
+
+Route::resource('tag',  TagController::class);
